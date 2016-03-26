@@ -1,63 +1,68 @@
-var atticus = ["Atticus", "2405", "47000", 3];
-var jem = ["Jem", "62347", "63500", 4];
-var boo = ["Boo", "11435", "54000", 3];
-var scout = ["Scout", "6243", "74750", 5];
+function Person (name, id, salary, stars){
+  this.name = name;
+  this.id = id;
+  this.salary = salary;
+  this.stars = stars;
+}
 
-var employees = [atticus, jem, boo, scout];
+var personA = new Person ("Atticus", 2405, 47000, 3); // <-- name, id, salary, stars
+var personJ = new Person ("Jem", 62347, 63500, 4);
+var personB = new Person ("Boo", 11435, 54000, 3);
+var personS = new Person ("Scout", 6243, 74750, 5);
+
+var employees = [personA, personJ, personB, personS];
 
 function calcSti(employee) {
-  var result = [];
-  for(var i = 0; i < employee.length;i++){
-    // Setting employee name
-
-    result[0] = employee[i][0];
+  var result = {};
+    result.name = employee.name;
 
      // Checking employee rating
-
-    switch (employee[i][3]) {
+    switch (employee.stars) {
       case 3:
-        result[1]=.04;
+        result.percent=.04;
         break;
       case 4:
-        result[1]=.06;
+        result.percent=.06;
         break;
       case 5:
-        result[1]= .1;
+        result.percent= .1;
         break;
       default:
-        result[1]= 0;
+        result.percent= 0;
       }
 
       // Additional bonus % based on length at company
-      if (employee[i][1].length <= 4) {
-        result[1] += .05;
+      if (employee.id.length <= 4) {  // is this a thing?
+        result.percent += .05;
       }
 
       // Remove 1% if income is over $65,000
-      if (employee[i][2] > 65000) {
-        result[1] -= .01;
+      if (employee.salary > 65000) {
+        result.percent -= .01;
       }
 
       // If bonus is over 13% lower set it to 13%
-      if (result[1] > .13) {
-        result[1] = .13;
+      if (result.percent > .13) {
+        result.percent = .13;
       }
 
-      // Annual Income + STI
-      var sti = parseInt(employee[i][2])*result[1];  //calculates STI
-      result[2]= sti + parseInt(employee[i][2]); // adds income and STI
-      //console.log("Income + STI = " + result[2]);
+      // Print Annual Income + STI to array
+      var sti = parseInt(employee.salary)*result.percent;  //calculates STI
+      var stiVal = sti + employee.salary;
+      result.aai= "Adjusted annual income: $" + stiVal.toString(); // adds income and STI
+      //console.log("Income + STI = " + result.aai);
 
-      //Total bonus
+      //Print Total bonus to array
       // Math.round()
-      result[3] = Math.round(employee[i][2] * result[1]);
+      result.bonus = "Total bonus: $" + Math.round(employee.salary * result.percent);
 
 
       // Convert decimal to percentage string with %
-      result[1] = result[1] * 100 + "%";
+      result.percent = result.percent * 100 + "%";
 
       // Final result
       console.log(result);
   }
+for (var it = 0; it < employees.length; it++) {
+  (calcSti(employees[it]));
 }
-calcSti(employees);
